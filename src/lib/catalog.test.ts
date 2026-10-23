@@ -12,11 +12,16 @@ describe('Catálogo fijo', () => {
       expect(product.ars).toBeGreaterThan(0);
       expect(product.usd).toBeGreaterThan(0);
     }
-    expect(formatPrice(products[0], 'ARS')).toBe('$ 1.450.000');
-    expect(formatPrice(products[0], 'USD')).toBe('US$ 1.200');
+    const solitaire = products.find(p => p.id === 'AN01');
+    if (!solitaire) throw new Error('Falta Solitaire');
+    expect(formatPrice(solitaire, 'ARS')).toBe('$ 1.450.000');
+    expect(formatPrice(solitaire, 'USD')).toBe('US$ 1.200');
   });
   it('incluye los artículos seleccionados y ambos precios en la consulta', () => {
-    const text = inquiryText([products[0], products[5]]);
+    const solitaire = products.find(p => p.id === 'AN01');
+    const lumiere = products.find(p => p.id === 'CA01');
+    if (!solitaire || !lumiere) throw new Error('Faltan las piezas de consulta');
+    const text = inquiryText([solitaire, lumiere]);
     expect(text).toContain('Solitaire (AN01)');
     expect(text).toContain('Lumière (CA01)');
     expect(text).toContain('$ 1.450.000 / US$ 1.200');
